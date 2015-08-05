@@ -1,0 +1,153 @@
+Installation Sequence:
+-----------------------
+> Install Docker if not Present
+> Pull komputerkida.git from repository
+> Load centos-6.6 image in docker using 'docker load command'
+   if not exists
+> Run Docker Build Command
+   > Which will read Dockerfile and install tools
+   > Maps Drupal code in centos:6.6/var/www/html folder
+   > Run Startup Script.
+
+
+
+
+Startup Script
+---------------
+> sudo service mysqld start
+> sudo service httpd start
+
+
+
+########## Install necessary Tools ##########
+----------------------------------------------
+rpm -ivh \
+   which-2.19-6.el6.x86_64.rpm \
+   wget-1.12-5.el6_6.1.x86_64.rpm \
+   yum-utils-1.1.30-30.el6.noarch.rpm \
+   tar-1.23-11.el6.x86_64.rpm
+
+############### Install vim ################
+----------------------------------------------
+rpm -ivh \
+   gpm-libs-1.20.6-12.el6.x86_64.rpm \
+   vim-common-7.2.411-1.8.el6.x86_64.rpm \
+   vim-enhanced-7.2.411-1.8.el6.x86_64.rpm
+
+########## Install httpd  ###########
+------------------------------------------------
+rpm -ivh \
+   apr-util-1.3.9-3.el6_0.1.x86_64.rpm \
+   apr-util-ldap-1.3.9-3.el6_0.1.x86_64.rpm \
+   apr-1.3.9-5.el6_2.x86_64.rpm \
+   httpd-tools-2.2.15-39.el6.centos.x86_64.rpm \
+   redhat-logos-60.0.14-12.el6.centos.noarch.rpm \
+   mailcap-2.1.31-2.el6.noarch.rpm \
+   httpd-2.2.15-39.el6.centos.x86_64.rpm
+
+Copy 
+   Host::httpd.conf file --> Guest::/etc/httpd/conf/httpd.conf
+
+############ Install php #############
+-------------------------------------------------
+rpm -ivh \
+   libedit-2.11-4.20080712cvs.1.el6.x86_64.rpm \
+   php-cli-5.3.3-46.el6_6.x86_64.rpm \
+   php-common-5.3.3-46.el6_6.x86_64.rpm \
+   php-5.3.3-46.el6_6.x86_64.rpm 
+
+
+########## Install php extensions ############
+--------------------------------------------------
+1> php-gd-5.3.3-46.el6_6.x86_64.rpm
+-------------------------------------
+rpm -ivh \
+   libX11-common-1.6.0-2.2.el6.noarch.rpm \
+   libXau-1.0.6-4.el6.x86_64.rpm \
+   libxcb-1.9.1-2.el6.x86_64.rpm \
+   libX11-1.6.0-2.2.el6.x86_64.rpm \
+   libXpm-3.5.10-2.el6.x86_64.rpm \
+   freetype-2.3.11-15.el6_6.1.x86_64.rpm \
+   libjpeg-turbo-1.2.1-3.el6_5.x86_64.rpm \
+   libpng-1.2.49-1.el6_2.x86_64.rpm \
+   php-gd-5.3.3-46.el6_6.x86_64.rpm
+
+2> php-mbstring-5.3.3-46.el6_6.x86_64.rpm
+------------------------------------------
+rpm -ivh \
+   php-mbstring-5.3.3-46.el6_6.x86_64.rpm
+
+3> php-pdo-5.3.3-46.el6_6.x86_64.rpm
+-------------------------------------
+rpm -ivh \
+   php-pdo-5.3.3-46.el6_6.x86_64.rpm
+
+4> php-mysql-5.3.3-46.el6_6.x86_64.rpm
+---------------------------------------
+rpm -ivh \
+   mysql-libs-5.1.73-5.el6_6.x86_64.rpm \
+   php-mysql-5.3.3-46.el6_6.x86_64.rpm
+
+5> php-xml-5.3.3-46.el6_6.x86_64.rpm
+-------------------------------------
+rpm -ivh \
+   libxslt-1.1.26-2.el6_3.1.x86_64.rpm \
+   php-xml-5.3.3-46.el6_6.x86_64.rpm
+
+6> php-pear-1.9.4-4.el6.noarch.rpm
+-----------------------------------
+rpm -ivh \
+   php-pear-1.9.4-4.el6.noarch.rpm
+
+######### Installing Perl ##############
+---------------------------------------------
+> perl-5.10.1-136.el6_6.1.x86_64.rpm
+rpm -ivh \
+   perl-libs-5.10.1-136.el6_6.1.x86_64.rpm \
+   perl-Module-Pluggable-3.90-136.el6_6.1.x86_64.rpm \
+   perl-Pod-Escapes-1.04-136.el6_6.1.x86_64.rpm \
+   perl-Pod-Simple-3.13-136.el6_6.1.x86_64.rpm \
+   perl-version-0.77-136.el6_6.1.x86_64.rpm \
+   perl-5.10.1-136.el6_6.1.x86_64.rpm
+
+######### Installing MySQL #############
+---------------------------------------------
+> mysql-5.1.73-5.el6_6.x86_64.rpm
+rpm -ivh \
+   mysql-5.1.73-5.el6_6.x86_64.rpm
+
+######## Installing MySQL-Server ############
+----------------------------------------------
+> mysql-server-5.1.73-5.el6_6.x86_64.rpm
+rpm -ivh \
+   perl-DBI-1.609-4.el6.x86_64.rpm \
+   perl-DBD-MySQL-4.013-3.el6.x86_64.rpm \
+   mysql-server-5.1.73-5.el6_6.x86_64.rpm
+
++--------------------------------+
++ Sample Root Password : root123 +
++--------------------------------+
+
+Steps to do after mysql installation:
+--------------------------------------
+> service mysqld start
+> /usr/bin/mysqladmin -u root password 'new-password'
+                   [OR]   
+> /usr/bin/mysqladmin -u root -h <host_address> password 'new-password'
+
+Start MySQL daemon with:
+-------------------------
+> cd /usr; /usr/bin/mysqld_safe &
+
+Test MySQL daemon with script:
+-------------------------------
+> cd /usr/mysql-test; perl mysql-test-run.pl 
+
+Alternatively you can run:
+---------------------------
+> /usr/bin/mysql_secure_installation
+
+
+Start httpd Services:
+----------------------
+> service httpd start
